@@ -14,7 +14,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="ko">
       <body className="flex flex-col items-center justify-center">
         <QueryClientProviderWrapper>
           <RecoilRootWrapper>
