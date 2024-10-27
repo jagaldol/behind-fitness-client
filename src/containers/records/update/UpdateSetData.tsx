@@ -84,7 +84,7 @@ export default function UpdateSetData({ data, sessionId, idx }: { data: SetData;
             if (e.key === "Enter") e.currentTarget.blur()
           }}
         />
-        <span>kg</span>
+        <span className="px-1">kg</span>
         <input
           className="text-end bg-input-box px-3 py-1 rounded-md"
           type="number"
@@ -111,22 +111,7 @@ export default function UpdateSetData({ data, sessionId, idx }: { data: SetData;
             } else if (data.count.toString() !== count) onBlurred("count", count)
           }}
         />
-        <input
-          className="text-center bg-input-box p-1 rounded-md"
-          value={set.countUnit}
-          onChange={(e) => {
-            if (e.target.value.length <= 2) {
-              setSet((prevState) => ({
-                ...prevState,
-                countUnit: e.target.value,
-              }))
-            }
-          }}
-          onBlur={() => {
-            if (set.countUnit.trim() !== "" && data.countUnit !== set.countUnit)
-              onBlurred("countUnit", set.countUnit.trim())
-          }}
-        />
+        <span className="px-1">{set.countUnit}</span>
 
         <button
           type="button"
