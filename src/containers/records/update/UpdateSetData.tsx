@@ -48,7 +48,45 @@ export default function UpdateSetData({ data, sessionId, idx }: { data: SetData;
       <>
         <span className="text-text-gray">{`${idx + 1}세트`}</span>
         <input
-          className="text-end bg-input-box p-1 rounded-md"
+          className="text-end bg-input-box px-3 py-1 rounded-md"
+          type="tel"
+          value={set.weight}
+          onFocus={() => {
+            setSet((prevState) => ({
+              ...prevState,
+              weight: "",
+            }))
+          }}
+          onChange={(e) => {
+            setSet((prevState) => ({
+              ...prevState,
+              weight: e.target.value,
+            }))
+          }}
+          onBlur={() => {
+            const { weight } = set
+            const trimWeight = weight.replaceAll(" ", "")
+            if (trimWeight === "") {
+              setSet((prevState) => ({
+                ...prevState,
+                weight: data.weight.toString(),
+              }))
+              return
+            }
+            if (data.weight.toString() !== trimWeight) onBlurred("weight", trimWeight)
+
+            setSet((prevState) => ({
+              ...prevState,
+              weight: trimWeight,
+            }))
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") e.currentTarget.blur()
+          }}
+        />
+        <span>kg</span>
+        <input
+          className="text-end bg-input-box px-3 py-1 rounded-md"
           type="number"
           value={set.count}
           onFocus={() => {
@@ -89,45 +127,7 @@ export default function UpdateSetData({ data, sessionId, idx }: { data: SetData;
               onBlurred("countUnit", set.countUnit.trim())
           }}
         />
-        <span className="text-text-gray pl-5 max-md:pl-2">무게</span>
-        <input
-          className="text-end bg-input-box p-1 rounded-md"
-          type="tel"
-          value={set.weight}
-          onFocus={() => {
-            setSet((prevState) => ({
-              ...prevState,
-              weight: "",
-            }))
-          }}
-          onChange={(e) => {
-            setSet((prevState) => ({
-              ...prevState,
-              weight: e.target.value,
-            }))
-          }}
-          onBlur={() => {
-            const { weight } = set
-            const trimWeight = weight.replaceAll(" ", "")
-            if (trimWeight === "") {
-              setSet((prevState) => ({
-                ...prevState,
-                weight: data.weight.toString(),
-              }))
-              return
-            }
-            if (data.weight.toString() !== trimWeight) onBlurred("weight", trimWeight)
 
-            setSet((prevState) => ({
-              ...prevState,
-              weight: trimWeight,
-            }))
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") e.currentTarget.blur()
-          }}
-        />
-        <span className="text-center">kg</span>
         <button
           type="button"
           aria-label="삭제"

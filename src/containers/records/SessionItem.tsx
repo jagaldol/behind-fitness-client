@@ -59,13 +59,12 @@ export default function SessionItem({ session, shortView = false }: { session: S
                 {shortView ? (
                   <span className="pl-5 text-text-gray">{`${record.sets.length}세트`}</span>
                 ) : (
-                  <div className="grid grid-cols-[minmax(0,_2fr)_minmax(0,_2fr)_minmax(0,_3fr)_minmax(0,_2fr)] gap-y-2 pt-2">
+                  <div className="grid grid-cols-[minmax(0,_2fr)_minmax(0,_2fr)_minmax(0,_3fr)] gap-y-2 pt-2">
                     {record.sets.map((set: SetData, idx: number) => (
                       <React.Fragment key={set.id}>
                         <span className="text-text-gray">{`${idx + 1}세트`}</span>
-                        <span className="text-end">{`${set.count}${set.countUnit}`}</span>
-                        <span className="text-text-gray text-center">무게</span>
                         <span className="text-end">{`${set.weight}kg`}</span>
+                        <span className="text-end">{`${set.count}${set.countUnit}`}</span>
                       </React.Fragment>
                     ))}
                   </div>

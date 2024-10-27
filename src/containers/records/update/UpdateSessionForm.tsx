@@ -126,7 +126,7 @@ export default function UpdateSessionForm({ data, sessionId }: { data: SessionDa
             </button>
           </div>
 
-          <div className="grid items-center grid-cols-[minmax(0,_1fr)_45px_35px_minmax(0,_1fr)_45px_20px_20px] gap-y-4 gap-x-2 pt-2">
+          <div className="grid items-center grid-cols-[minmax(0,_1fr)_60px_minmax(0,_1fr)_60px_40px_20px] gap-y-4 gap-x-2 pt-2">
             {record.sets.map((set: SetData, idx: number) => (
               <UpdateSetData data={set} sessionId={sessionId} idx={idx} key={set.id} />
             ))}
