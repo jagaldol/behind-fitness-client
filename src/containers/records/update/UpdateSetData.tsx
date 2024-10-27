@@ -110,6 +110,9 @@ export default function UpdateSetData({ data, sessionId, idx }: { data: SetData;
               }))
             } else if (data.count.toString() !== count) onBlurred("count", count)
           }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") e.currentTarget.blur()
+          }}
         />
         <span className="px-1">{set.countUnit}</span>
 
