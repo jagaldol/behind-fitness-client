@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import moment from "moment/moment"
 import Calendar from "react-calendar"
 import { useRecoilState } from "recoil"
@@ -54,6 +54,10 @@ export default function MainCalendar() {
       }),
   })
 
+  useEffect(() => {
+    setParams({ month: moment(activeStartDateState).format("YYYY-MM") })
+  }, [activeStartDateState])
+
   return (
     isFetched && (
       <Calendar
@@ -75,11 +79,8 @@ export default function MainCalendar() {
           return ""
         }}
         value={selectedDate}
-        onActiveStartDateChange={({ activeStartDate, view }) => {
+        onActiveStartDateChange={({ activeStartDate }) => {
           if (activeStartDate) setActiveStartDateState(activeStartDate)
-          if (view === "month") {
-            setParams({ month: moment(activeStartDate).format("YYYY-MM") })
-          }
         }}
         onChange={(selectedData) => {
           setSelectedDate(selectedData as Date)
