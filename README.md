@@ -42,8 +42,14 @@ $ docker compose up -d
 
 실행 시 아래의 두 컨테이너가 실행됩니다.
 
-- **backend**: `Spring Boot` 서버가 로컬 환경에서 `8080`포트로 실행됩니다.
 - **redis**: `Refresh Token`을 위한 `in-memory DB`로 `6379` 포트에서 실행됩니다.
+- **backend**: `Spring Boot` 서버가 로컬 환경에서 `8080`포트로 실행됩니다.
+  - **test ID**: test@test.com
+  - **test password**: password
+
+로컬 서버가 정상적으로 가동 중이라면, 위의 계정으로 로그인하여 개발을 진행할 수 있습니다.
+
+**❗주의: 로컬 서버의 DB는 Docker 컨테이너를 재실행할 때마다 초기화됩니다.**
 
 > 백엔드 서버에 대한 자세한 내용은 [백엔드 레포지토리](https://github.com/jagaldol/behind-fitness-server)에서 확인하세요.
 
@@ -60,3 +66,10 @@ $ npm run dev
 ```
 
 `next.js`가 실행되고 나면, [http://localhost:3000](http://localhost:3000)에서 애플리케이션을 확인할 수 있습니다.
+
+### Login
+
+- **ID**: test@test.com
+- **password**: password
+
+로컬 서버가 정상 가동 중이라면 해당 계정으로 로그인하여 개발을 진행할 수 있습니다.
