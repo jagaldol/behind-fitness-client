@@ -1,8 +1,7 @@
 "use client"
 
 import React, { useCallback } from "react"
-import { useRecoilValue } from "recoil"
-import selectedDateState from "@/states/selectedDateState"
+import useSelectedDateStore from "@/states/selectedDateState"
 import axiosInstance from "@/utils/axiosInstance"
 import { SessionData } from "@/types/record"
 import moment from "moment/moment"
@@ -11,7 +10,7 @@ import SessionItem from "@/containers/records/SessionItem"
 import useIntersectionObserver from "@/hooks/useIntersectionObserver"
 
 export default function MainRecordContainer() {
-  const date = useRecoilValue(selectedDateState)
+  const date = useSelectedDateStore((state) => state.selectedDate)
   const param = { date: moment(date).format("YYYY-MM-DD") }
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
     initialData: undefined,

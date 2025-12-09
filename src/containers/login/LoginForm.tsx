@@ -1,9 +1,8 @@
 "use client"
 
 import React, { forwardRef, HTMLInputTypeAttribute, useEffect, useRef } from "react"
-import { useSetRecoilState } from "recoil"
 import { useRouter } from "next/navigation"
-import { userIdState } from "@/states/auth"
+import useAuthStore from "@/states/auth"
 import { getJwtId, getJwtPayload, saveJwt } from "@/utils/jwtDecoder"
 import axiosInstance from "@/utils/axiosInstance"
 import useToast from "@/hooks/useToast"
@@ -38,7 +37,7 @@ const Field = forwardRef(function FieldForward(
 })
 
 export default function LoginForm() {
-  const setUserId = useSetRecoilState(userIdState)
+  const setUserId = useAuthStore((state) => state.setUserId)
   const errorHandler = useErrorResponseHandler()
   const router = useRouter()
   const emailInputRef = useRef<HTMLInputElement>(null)

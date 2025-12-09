@@ -1,8 +1,13 @@
-import { atom } from "recoil"
+import { create } from "zustand"
 
-const selectedDateState = atom({
-  key: "selectedDateState",
-  default: new Date(),
-})
+type SelectedDateState = {
+  selectedDate: Date
+  setSelectedDate: (value: Date) => void
+}
 
-export default selectedDateState
+const useSelectedDateStore = create<SelectedDateState>((set) => ({
+  selectedDate: new Date(),
+  setSelectedDate: (value) => set({ selectedDate: value }),
+}))
+
+export default useSelectedDateStore

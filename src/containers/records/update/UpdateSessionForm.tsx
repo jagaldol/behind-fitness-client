@@ -12,8 +12,7 @@ import { MdAdd, MdDelete, MdEdit } from "react-icons/md"
 import useModal from "@/hooks/useModal"
 import AddRecordForm from "@/containers/records/update/AddRecordForm"
 import UpdateRecordForm from "@/containers/records/update/UpdateRecordForm"
-import { useSetRecoilState } from "recoil"
-import selectedDateState from "@/states/selectedDateState"
+import useSelectedDateStore from "@/states/selectedDateState"
 import moment from "moment"
 
 export default function UpdateSessionForm({ data, sessionId }: { data: SessionData; sessionId: number }) {
@@ -21,7 +20,7 @@ export default function UpdateSessionForm({ data, sessionId }: { data: SessionDa
   const { addSuccessToast } = useToast()
   const queryClient = useQueryClient()
   const { openModal } = useModal()
-  const setSelectedDate = useSetRecoilState(selectedDateState)
+  const setSelectedDate = useSelectedDateStore((state) => state.setSelectedDate)
 
   const { mutate: sessionMutate } = useMutation({
     mutationFn: (body: any) => axiosInstance.put(`/sessions/${sessionId}`, body),

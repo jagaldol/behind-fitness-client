@@ -1,23 +1,21 @@
 "use client"
 
-import { useRecoilState } from "recoil"
-import modalState from "@/states/modalState"
+import { useEffect } from "react"
+import useModalStore from "@/states/modalState"
 import { ModalData } from "@/types/modal"
 import Modal from "@/components/modal/Modal"
-import { useEffect } from "react"
 
 function ModalList() {
-  const [modalList, setModalList] = useRecoilState(modalState)
+  const modalList = useModalStore((state) => state.modals)
+  const popModal = useModalStore((state) => state.popModal)
 
   useEffect(() => {
-    const popModal = () => {
-      setModalList((prev: ModalData[]) => {
-        return prev.slice(0, prev.length - 1)
-      })
+    const handlePopState = () => {
+      popModal()
     }
-    window.addEventListener("popstate", popModal)
-    return () => window.removeEventListener("popstate", popModal)
-  }, [setModalList])
+    window.addEventListener("popstate", handlePopState)
+    return () => window.removeEventListener("popstate", handlePopState)
+  }, [popModal])
 
   return modalList.map((item: ModalData, idx) => <Modal key={item.id} zIndex={idx + 100} modalData={item} />)
 }

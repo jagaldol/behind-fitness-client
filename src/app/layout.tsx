@@ -1,7 +1,6 @@
 import React from "react"
 import "@/styles/globals.css"
 import "@/styles/react-calendar.css"
-import RecoilRootWrapper from "@/wrappers/RecoilRootWrapper"
 import QueryClientProviderWrapper from "@/wrappers/QueryClientProviderWrapper"
 import Toast from "@/components/toast/Toast"
 import ModalList from "@/components/modal/ModalList"
@@ -17,13 +16,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="ko">
       <body className="flex flex-col items-center justify-center">
         <QueryClientProviderWrapper>
-          <RecoilRootWrapper>
-            <AxiosInterceptorWrapper>
-              {children}
-              <Toast />
-              <ModalList />
-            </AxiosInterceptorWrapper>
-          </RecoilRootWrapper>
+          <AxiosInterceptorWrapper>
+            {children}
+            <Toast />
+            <ModalList />
+          </AxiosInterceptorWrapper>
         </QueryClientProviderWrapper>
       </body>
     </html>

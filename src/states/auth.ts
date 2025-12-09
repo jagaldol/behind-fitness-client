@@ -1,13 +1,15 @@
-import { atom, selector } from "recoil"
+import { create } from "zustand"
 
-export const userIdState = atom({
-  key: "userIdState",
-  default: 0,
-})
+type AuthState = {
+  userId: number
+  setUserId: (value: number) => void
+}
 
-export const isLoginState = selector({
-  key: "isLoginState",
-  get: ({ get }) => {
-    return get(userIdState) !== 0
-  },
-})
+const useAuthStore = create<AuthState>((set) => ({
+  userId: 0,
+  setUserId: (value) => set({ userId: value }),
+}))
+
+export const useUserId = () => useAuthStore((state) => state.userId)
+export const useIsLoggedIn = () => useAuthStore((state) => state.userId !== 0)
+export default useAuthStore

@@ -5,15 +5,14 @@ import { Record, SessionData, SetData } from "@/types/record"
 import Link from "next/link"
 import axiosInstance from "@/utils/axiosInstance"
 import useToast from "@/hooks/useToast"
-import { useRecoilValue } from "recoil"
-import selectedDateState from "@/states/selectedDateState"
+import useSelectedDateStore from "@/states/selectedDateState"
 import moment from "moment"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 export default function SessionItem({ session, shortView = false }: { session: SessionData; shortView?: boolean }) {
   const { addSuccessToast } = useToast()
 
-  const date = useRecoilValue(selectedDateState)
+  const date = useSelectedDateStore((state) => state.selectedDate)
   const sessionParam = { date: moment(date).format("YYYY-MM-DD") }
   const sessionDateParam = { month: moment(date).format("YYYY-MM") }
 

@@ -3,8 +3,7 @@
 import React, { useEffect, useState } from "react"
 import moment from "moment/moment"
 import Calendar from "react-calendar"
-import { useRecoilState } from "recoil"
-import selectedDateState from "@/states/selectedDateState"
+import useSelectedDateStore from "@/states/selectedDateState"
 import { useQuery } from "@tanstack/react-query"
 import axiosInstance from "@/utils/axiosInstance"
 import { useSwipeable } from "react-swipeable"
@@ -12,7 +11,8 @@ import { useSwipeable } from "react-swipeable"
 type View = "century" | "decade" | "year" | "month"
 
 export default function MainCalendar() {
-  const [selectedDate, setSelectedDate] = useRecoilState(selectedDateState)
+  const selectedDate = useSelectedDateStore((state) => state.selectedDate)
+  const setSelectedDate = useSelectedDateStore((state) => state.setSelectedDate)
   const [activeStartDateState, setActiveStartDateState] = useState(selectedDate)
   const [viewState, setViewState] = useState<View>("month")
 

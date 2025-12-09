@@ -1,30 +1,24 @@
-import { useSetRecoilState } from "recoil"
-import modalState from "@/states/modalState"
 import React from "react"
 import { useRouter } from "next/navigation"
-import { ModalData } from "@/types/modal"
+import useModalStore from "@/states/modalState"
 
 export default function useModal() {
-  const setModalList = useSetRecoilState(modalState)
+  const pushModal = useModalStore((state) => state.pushModal)
+  const popModal = useModalStore((state) => state.popModal)
   const router = useRouter()
 
   const openModal = (title: string, body: React.ReactNode) => {
-    setModalList((prev) => [
-      ...prev,
-      {
-        id: Date.now(),
-        title,
-        body,
-      },
-    ])
+    pushModal({
+      id: Date.now(),
+      title,
+      body,
+    })
     history.pushState(null, "")
   }
   const onCloseModal = (href?: string) => {
     if (href) {
       router.replace(href, { scroll: false })
-      setModalList((prev: ModalData[]) => {
-        return prev.slice(0, prev.length - 1)
-      })
+      popModal()
     } else router.back()
   }
 

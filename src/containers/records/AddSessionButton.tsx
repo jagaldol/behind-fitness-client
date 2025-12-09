@@ -3,12 +3,11 @@
 import { MdOutlineAddBox } from "react-icons/md"
 import useModal from "@/hooks/useModal"
 import AddSessionForm from "@/containers/records/AddSessionForm"
-import { useRecoilValue } from "recoil"
-import selectedDateState from "@/states/selectedDateState"
+import useSelectedDateStore from "@/states/selectedDateState"
 
 export default function AddSessionButton({ otherDate = false }: { otherDate?: boolean }) {
   const { openModal } = useModal()
-  const selectedDate = useRecoilValue(selectedDateState)
+  const selectedDate = useSelectedDateStore((state) => state.selectedDate)
   return (
     <button
       type="button"

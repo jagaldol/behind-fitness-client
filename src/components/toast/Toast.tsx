@@ -1,13 +1,12 @@
 "use client"
 
 import { MdCheckCircleOutline, MdErrorOutline, MdWarningAmber } from "react-icons/md"
-import { useRecoilValue } from "recoil"
 import { ToastData } from "@/types/toast"
-import toastState from "@/states/toastState"
+import useToastStore from "@/states/toastState"
 import ToastItem from "@/components/toast/ToastItem"
 
 function Toast(): JSX.Element {
-  const toastList = useRecoilValue(toastState)
+  const toastList = useToastStore((state) => state.toasts)
 
   const getBackgroundColor = (type: string) => {
     switch (type) {
