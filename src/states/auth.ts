@@ -1,6 +1,6 @@
 import { create } from "zustand"
 
-type AuthState = {
+interface AuthState {
   userId: number
   setUserId: (value: number) => void
 }

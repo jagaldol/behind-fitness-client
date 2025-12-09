@@ -29,10 +29,10 @@ export default function UpdateSetData({ data, sessionId, idx }: { data: SetData;
   })
 
   const onBlurred = (label: string, value: any) => {
-    setDataMutate(
+    void setDataMutate(
       { [label]: value },
       {
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: [`/sessions/${sessionId}`] }).then(),
+        onSuccess: () => void queryClient.invalidateQueries({ queryKey: [`/sessions/${sessionId}`] }),
         onError: () =>
           setSet({
             weight: data.weight.toString(),
@@ -120,9 +120,9 @@ export default function UpdateSetData({ data, sessionId, idx }: { data: SetData;
           type="button"
           aria-label="삭제"
           onClick={() =>
-            deleteDataMutate(undefined, {
+            void deleteDataMutate(undefined, {
               onSuccess: () => {
-                queryClient.invalidateQueries({ queryKey: [`/sessions/${sessionId}`] }).then()
+                void queryClient.invalidateQueries({ queryKey: [`/sessions/${sessionId}`] })
                 addSuccessToast("삭제되었습니다.")
               },
             })

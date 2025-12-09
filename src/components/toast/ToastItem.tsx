@@ -17,15 +17,21 @@ function ToastItem({ toastData, backgroundColor, icon }: Props): JSX.Element {
   const removeToast = useToastStore((state) => state.removeToast)
 
   useEffect(() => {
-    setVisible(true)
-    const timer = setTimeout(() => {
+    const showTimer = requestAnimationFrame(() => {
+      setVisible(true)
+    })
+    const hideTimer = setTimeout(() => {
       setVisible(false)
-      setTimeout(() => {
-        removeToast(id)
-      }, 300)
     }, 2000)
+    const removeTimer = setTimeout(() => {
+      removeToast(id)
+    }, 2300)
 
-    return () => clearTimeout(timer)
+    return () => {
+      cancelAnimationFrame(showTimer)
+      clearTimeout(hideTimer)
+      clearTimeout(removeTimer)
+    }
   }, [id, removeToast])
 
   return (

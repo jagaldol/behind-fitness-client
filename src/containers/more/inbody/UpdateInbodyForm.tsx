@@ -31,7 +31,7 @@ export default function UpdateInbodyForm({ id }: { id: number }) {
       return axiosInstance.put(`/inbody/${id}`, newData)
     },
     onSuccess: () => {
-      queryClient.refetchQueries({ queryKey: ["/inbody"] }).then()
+      void queryClient.refetchQueries({ queryKey: ["/inbody"] })
     },
   })
 
@@ -40,7 +40,7 @@ export default function UpdateInbodyForm({ id }: { id: number }) {
       return axiosInstance.delete(`/inbody/${id}`, newData)
     },
     onSuccess: () => {
-      queryClient.refetchQueries({ queryKey: ["/inbody"] }).then()
+      void queryClient.refetchQueries({ queryKey: ["/inbody"] })
     },
   })
 
@@ -50,12 +50,16 @@ export default function UpdateInbodyForm({ id }: { id: number }) {
   const [fat, setFat] = useState("")
 
   useEffect(() => {
-    if (isFetched) {
-      setDate(moment(data.filter((d: any) => d.id === id)[0].date, "YYYY-MM_DD").toDate())
-      setWeight(data.filter((d: any) => d.id === id)[0].weight)
-      setMuscle(data.filter((d: any) => d.id === id)[0].muscle)
-      setFat(data.filter((d: any) => d.id === id)[0].fat)
-    }
+    if (!isFetched) return undefined
+    const target = data?.find((d: any) => d.id === id)
+    if (!target) return undefined
+    const frame = requestAnimationFrame(() => {
+      setDate(moment(target.date, "YYYY-MM_DD").toDate())
+      setWeight(target.weight)
+      setMuscle(target.muscle)
+      setFat(target.fat)
+    })
+    return () => cancelAnimationFrame(frame)
   }, [id, isFetched, data])
   return (
     isFetched && (
@@ -67,7 +71,7 @@ export default function UpdateInbodyForm({ id }: { id: number }) {
           const m = Number(muscle)
           const f = Number(fat)
 
-          updateMutate(
+          void updateMutate(
             {
               date: moment(date).format("YYYY-MM-DD"),
               weight: w,
@@ -139,7 +143,7 @@ export default function UpdateInbodyForm({ id }: { id: number }) {
             type="button"
             className="w-full h-10 rounded-full bg-main-theme"
             onClick={() => {
-              deleteMutate(undefined, {
+              void deleteMutate(undefined, {
                 onSuccess: () => {
                   onCloseModal()
                   addSuccessToast("삭제되었습니다.")

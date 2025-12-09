@@ -38,12 +38,12 @@ export default function AddSessionForm({ defaultDate }: { defaultDate: Date }) {
               ? `${startHour.toString().padStart(2, "0")}:${startMinute.toString().padStart(2, "0")}`
               : undefined,
         }
-        mutate(data, {
+        void mutate(data, {
           onSuccess: (res) => {
             onCloseModal(`/update-record?id=${res.data.response.id}`)
             addSuccessToast("기록이 생성되었습니다.")
             router.push(`/update-record?id=${res.data.response.id}`, { scroll: false })
-            queryClient.invalidateQueries({ queryKey: ["/sessions"] }).then()
+            void queryClient.invalidateQueries({ queryKey: ["/sessions"] })
           },
           onError: (err) => errorHandler(err),
         })

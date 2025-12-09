@@ -39,7 +39,7 @@ export default function useAxiosInterceptor() {
           saveJwt(jwt)
           onRefreshed(jwt)
           newConfig.headers.Authorization = jwt
-        } catch (e) {
+        } catch {
           deleteJwt()
         } finally {
           isRefreshing = false

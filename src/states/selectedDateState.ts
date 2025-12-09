@@ -1,6 +1,6 @@
 import { create } from "zustand"
 
-type SelectedDateState = {
+interface SelectedDateState {
   selectedDate: Date
   setSelectedDate: (value: Date) => void
 }

@@ -23,7 +23,7 @@ export default function AddInbodyForm() {
       return axiosInstance.post("/inbody", data)
     },
     onSuccess: () => {
-      queryClient.refetchQueries({ queryKey: ["/inbody"] }).then()
+      void queryClient.refetchQueries({ queryKey: ["/inbody"] })
     },
   })
   const [date, setDate] = useState(new Date())
@@ -40,7 +40,7 @@ export default function AddInbodyForm() {
         const m = Number(muscle)
         const f = Number(fat)
 
-        mutate(
+        void mutate(
           {
             date: moment(date).format("YYYY-MM-DD"),
             weight: w,

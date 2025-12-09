@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import moment from "moment/moment"
 import Calendar from "react-calendar"
 import useSelectedDateStore from "@/states/selectedDateState"
@@ -16,7 +16,9 @@ export default function MainCalendar() {
   const [activeStartDateState, setActiveStartDateState] = useState(selectedDate)
   const [viewState, setViewState] = useState<View>("month")
 
-  const [params, setParams] = useState({ month: moment(selectedDate).format("YYYY-MM") })
+  const params = React.useMemo(() => {
+    return { month: moment(activeStartDateState).format("YYYY-MM") }
+  }, [activeStartDateState])
 
   const { data, isFetched } = useQuery({
     queryKey: ["/sessions/dates", params],
@@ -54,14 +56,10 @@ export default function MainCalendar() {
       }),
   })
 
-  useEffect(() => {
-    setParams({ month: moment(activeStartDateState).format("YYYY-MM") })
-  }, [activeStartDateState])
-
   return (
     isFetched && (
       <Calendar
-        inputRef={handlers.ref}
+        inputRef={(node) => handlers.ref(node)}
         locale="ko"
         activeStartDate={activeStartDateState}
         view={viewState}
@@ -74,7 +72,7 @@ export default function MainCalendar() {
         formatMonthYear={(locale, date) => moment(date).format("YYYY. MM")}
         formatYear={(locale, date) => moment(date).format("YYYY")}
         tileClassName={({ date, view }) => {
-          if (view === "month" && data && data.includes(moment(date).format("YYYY-MM-DD")))
+          if (view === "month" && data?.includes(moment(date).format("YYYY-MM-DD")))
             return "react-calendar__tile-marker"
           return ""
         }}

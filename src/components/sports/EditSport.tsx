@@ -11,7 +11,7 @@ export default function EditSport({ sportId }: { sportId: number }) {
 
   const { mutate: putSportMutate } = useMutation({
     mutationFn: (data: any) => axiosInstance.put(`/sports/${sportId}`, data),
-    onSuccess: () => queryClient.refetchQueries({ queryKey: ["/sports"] }).then(),
+    onSuccess: () => queryClient.refetchQueries({ queryKey: ["/sports"] }),
     onError: (err) => errorHandler(err, "DUPLICATED_DATA", "이미존재하는 이름입니다."),
   })
   const { data: sports } = useSportsQuery()
@@ -19,6 +19,7 @@ export default function EditSport({ sportId }: { sportId: number }) {
   const [name, setName] = useState("")
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (sports) setName(sports.filter((item: any) => item.id === sportId)[0]?.name)
   }, [sports, sportId])
 

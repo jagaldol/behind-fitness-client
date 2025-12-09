@@ -26,7 +26,7 @@ function CustomTooltip({ point }: PointTooltipProps, unit: string) {
   return (
     <BasicTooltip
       id={moment(point.data.x).format("YY년 M월 D일")}
-      value={`${point.data.y}${unit}`}
+      value={`${String(point.data.y)}${unit}`}
       enableChip
       color={point.serieColor}
     />

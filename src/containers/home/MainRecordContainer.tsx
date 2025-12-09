@@ -32,12 +32,13 @@ export default function MainRecordContainer() {
     },
   })
   const handleIntersect = useCallback(
-    async ([entry]: IntersectionObserverEntry[], observer: IntersectionObserver) => {
+    ([entry]: IntersectionObserverEntry[], observer: IntersectionObserver) => {
       if (entry.isIntersecting) {
         observer.unobserve(entry.target)
         if (hasNextPage) {
-          await fetchNextPage()
-          observer.observe(entry.target)
+          void fetchNextPage().then(() => {
+            observer.observe(entry.target)
+          })
         }
       }
     },

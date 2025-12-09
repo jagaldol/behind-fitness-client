@@ -20,8 +20,8 @@ export default function SessionItem({ session, shortView = false }: { session: S
   const { mutate } = useMutation({
     mutationFn: () => axiosInstance.delete(`/sessions/${session.id}`),
     onSuccess: () => {
-      queryClient.refetchQueries({ queryKey: ["/sessions", sessionParam] }).then()
-      queryClient.refetchQueries({ queryKey: ["/sessions/dates", sessionDateParam] }).then()
+      void queryClient.refetchQueries({ queryKey: ["/sessions", sessionParam] })
+      void queryClient.refetchQueries({ queryKey: ["/sessions/dates", sessionDateParam] })
       addSuccessToast("삭제되었습니다.")
     },
   })
@@ -42,7 +42,7 @@ export default function SessionItem({ session, shortView = false }: { session: S
                 type="button"
                 aria-label="삭제"
                 onClick={() => {
-                  if (confirm("정말 삭제하시겠습니까?")) mutate()
+                  if (confirm("정말 삭제하시겠습니까?")) void mutate()
                 }}
               >
                 <MdDelete />

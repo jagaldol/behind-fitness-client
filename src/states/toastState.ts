@@ -1,7 +1,7 @@
 import { ToastData } from "@/types/toast"
 import { create } from "zustand"
 
-type ToastStore = {
+interface ToastStore {
   toasts: ToastData[]
   addToast: (toast: ToastData) => void
   removeToast: (id: number) => void

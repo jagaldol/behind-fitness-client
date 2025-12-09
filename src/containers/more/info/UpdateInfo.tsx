@@ -30,7 +30,7 @@ export default function UpdateInfo() {
   const reset = useCallback(() => {
     if (userInfo) {
       setName(userInfo.name)
-      setMemo(userInfo.memo ? userInfo.memo : "")
+      setMemo(userInfo.memo ?? "")
       setGender(userInfo.gender)
       setHeight(userInfo.height)
     }
@@ -46,8 +46,11 @@ export default function UpdateInfo() {
   }
 
   useEffect(() => {
-    reset()
-  }, [reset, userInfo])
+    const frame = requestAnimationFrame(() => {
+      reset()
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [reset])
   return (
     <div className="flex flex-col gap-10">
       <div className="grid grid-cols-[minmax(0,_1fr)_minmax(0,_5fr)] gap-y-4 gapx-1 pl-3 items-center">

@@ -17,7 +17,7 @@ export default function AddRecordForm() {
     mutationFn: (data: any) => axiosInstance.post(`/sessions/${Number(searchParams.get("id"))}/records`, data),
     onSuccess: () => {
       addSuccessToast("운동을 추가하였습니다.")
-      queryClient.refetchQueries({ queryKey: [`/sessions/${Number(searchParams.get("id"))}`] }).then()
+      void queryClient.refetchQueries({ queryKey: [`/sessions/${Number(searchParams.get("id"))}`] })
       onCloseModal()
     },
     onError: (err) => errorHandler(err),

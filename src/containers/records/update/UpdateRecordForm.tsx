@@ -20,7 +20,7 @@ export default function UpdateRecordForm({ recordId, currentId }: { recordId: nu
     mutationFn: (data: any) => axiosInstance.put(`/sessions/records/${recordId}`, data),
     onSuccess: () => {
       addSuccessToast("수정하였습니다.")
-      queryClient.refetchQueries({ queryKey: [`/sessions/${Number(searchParams.get("id"))}`] }).then()
+      void queryClient.refetchQueries({ queryKey: [`/sessions/${Number(searchParams.get("id"))}`] })
       onCloseModal()
     },
     onError: (err) => errorHandler(err),

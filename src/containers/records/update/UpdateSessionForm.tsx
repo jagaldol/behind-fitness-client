@@ -36,11 +36,11 @@ export default function UpdateSessionForm({ data, sessionId }: { data: SessionDa
   })
 
   const updateSession = (label: string, value: any) => {
-    sessionMutate(
+    void sessionMutate(
       { [label]: value },
       {
         onSuccess: () => {
-          queryClient.refetchQueries({ queryKey: [`/sessions/${sessionId}`] }).then()
+          void queryClient.refetchQueries({ queryKey: [`/sessions/${sessionId}`] })
         },
       },
     )
@@ -113,9 +113,9 @@ export default function UpdateSessionForm({ data, sessionId }: { data: SessionDa
               type="button"
               aria-label="삭제"
               onClick={() =>
-                deleteRecordMutate(record.id, {
+                void deleteRecordMutate(record.id, {
                   onSuccess: () => {
-                    queryClient.refetchQueries({ queryKey: [`/sessions/${sessionId}`] }).then()
+                    void queryClient.refetchQueries({ queryKey: [`/sessions/${sessionId}`] })
                     addSuccessToast("삭제되었습니다.")
                   },
                 })
@@ -133,11 +133,11 @@ export default function UpdateSessionForm({ data, sessionId }: { data: SessionDa
           <button
             type="button"
             onClick={() =>
-              postSetRecord(
+              void postSetRecord(
                 { id: record.id, postSetData: record.sets.length > 0 ? record.sets[record.sets.length - 1] : {} },
                 {
                   onSuccess: () => {
-                    queryClient.refetchQueries({ queryKey: [`/sessions/${sessionId}`] }).then()
+                    void queryClient.refetchQueries({ queryKey: [`/sessions/${sessionId}`] })
                     addSuccessToast("세트를 생성했습니다.")
                   },
                 },
@@ -167,11 +167,11 @@ export default function UpdateSessionForm({ data, sessionId }: { data: SessionDa
           if (!data.endTime && confirm("종료시간이 설정되지 않았습니다. 현재시간을 종료시간으로 설정하겠습니까?")) {
             const now = moment()
             now.minute(Math.round(now.minute() / 10) * 10)
-            sessionMutate(
+            void sessionMutate(
               { endTime: now.format("HH:mm") },
               {
                 onSuccess: () => {
-                  queryClient.refetchQueries({
+                  void queryClient.refetchQueries({
                     queryKey: ["/sessions", { date: moment(data.date).format("YYYY-MM-DD") }],
                   })
                 },

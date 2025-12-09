@@ -10,15 +10,7 @@ import useMutateWithQueryClient from "@/hooks/useMutateWithQueryClient"
 import useErrorResponseHandler from "@/hooks/useErrorResponseHandler"
 
 const Field = forwardRef(function FieldForward(
-  {
-    label,
-    id,
-    type,
-  }: {
-    label: string
-    id: string
-    type: HTMLInputTypeAttribute
-  },
+  { label, id, type }: { label: string; id: string; type: HTMLInputTypeAttribute },
   ref: React.Ref<HTMLInputElement>,
 ) {
   return (
@@ -60,7 +52,7 @@ export default function LoginForm() {
         e.preventDefault()
         const email = emailInputRef?.current?.value
         const password = passwordInputRef?.current?.value
-        mutate(
+        void mutate(
           { email, password },
           {
             onSuccess: (res) => {
@@ -68,7 +60,7 @@ export default function LoginForm() {
               const jwt = res.headers.authorization
               saveJwt(jwt)
               setUserId(getJwtId(jwt))
-              queryClient.invalidateQueries().then()
+              void queryClient.invalidateQueries()
               router.replace("/")
             },
             onError: (err) => errorHandler(err, "LOGIN_FAILED", "이메일 혹은 비밀번호가 틀렸습니다.", "WARN"),

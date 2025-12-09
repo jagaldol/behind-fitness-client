@@ -24,7 +24,7 @@ body:
       placeholder: |
         ex) 
         현재 작업 진행상황, 진행중 생겼던 이슈, 해결 방법 등
-    validations: 
+    validations:
       required: true
   - type: textarea
     attributes:

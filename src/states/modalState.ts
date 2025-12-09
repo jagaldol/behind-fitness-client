@@ -1,7 +1,7 @@
 import { ModalData } from "@/types/modal"
 import { create } from "zustand"
 
-type ModalStore = {
+interface ModalStore {
   modals: ModalData[]
   pushModal: (modal: ModalData) => void
   popModal: () => void

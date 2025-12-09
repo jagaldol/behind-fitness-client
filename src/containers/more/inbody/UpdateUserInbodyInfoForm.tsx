@@ -22,7 +22,11 @@ export default function UpdateUserInbodyInfoForm() {
   const heightRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    if (userInfo) setGender(userInfo.gender)
+    if (!userInfo) return undefined
+    const frame = requestAnimationFrame(() => {
+      setGender(userInfo.gender)
+    })
+    return () => cancelAnimationFrame(frame)
   }, [userInfo])
 
   return (
