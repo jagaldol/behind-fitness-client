@@ -1,3 +1,5 @@
+@reference "./globals.css";
+
 .date-picker .react-calendar {
   width: 100%;
   border: 1px solid theme("colors.input-box");
