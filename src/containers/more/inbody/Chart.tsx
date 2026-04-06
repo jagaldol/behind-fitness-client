@@ -1,9 +1,20 @@
-import { Datum, PointTooltipProps, ResponsiveLine } from "@nivo/line"
+import { PointTooltipProps, ResponsiveLine } from "@nivo/line"
 import { BasicTooltip } from "@nivo/tooltip"
 import React from "react"
 import useModal from "@/hooks/useModal"
 import UpdateInbodyForm from "@/containers/more/inbody/UpdateInbodyForm"
 import moment from "moment/moment"
+
+interface InbodyDatum {
+  x: string
+  y: number
+  id: string | number
+}
+
+interface InbodyLineSeries {
+  id: string
+  data: InbodyDatum[]
+}
 
 const theme = {
   text: {
@@ -22,13 +33,13 @@ const theme = {
   },
 }
 
-function CustomTooltip({ point }: PointTooltipProps, unit: string) {
+function CustomTooltip({ point }: PointTooltipProps<InbodyLineSeries>, unit: string) {
   return (
     <BasicTooltip
       id={moment(point.data.x).format("YY년 M월 D일")}
       value={`${String(point.data.y)}${unit}`}
       enableChip
-      color={point.serieColor}
+      color={point.seriesColor}
     />
   )
 }
@@ -40,11 +51,12 @@ export default function Chart({
   unit = "kg",
 }: {
   id: string
-  data: Datum[]
+  data: InbodyDatum[]
   color: string
   unit?: string
 }) {
   const { openModal } = useModal()
+  const chartData: InbodyLineSeries[] = [{ id, data }]
 
   if (data.length === 0) return <div className="w-full text-center text-text-gray">기록을 추가해주세요</div>
   const minY = Math.min(...data.map((d) => Number(d.y))) - 0.1
@@ -74,12 +86,7 @@ export default function Chart({
 
   return (
     <ResponsiveLine
-      data={[
-        {
-          id,
-          data,
-        },
-      ]}
+      data={chartData}
       margin={{ top: 10, right: 10, bottom: 54, left: 32 }}
       xScale={{
         type: "time",
