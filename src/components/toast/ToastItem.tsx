@@ -10,7 +10,7 @@ interface Props {
   icon: React.ReactNode
 }
 
-function ToastItem({ toastData, backgroundColor, icon }: Props): JSX.Element {
+function ToastItem({ toastData, backgroundColor, icon }: Props) {
   const { id, message } = toastData
   const [visible, setVisible] = useState(false)
 

@@ -5,7 +5,7 @@ import { ToastData } from "@/types/toast"
 import useToastStore from "@/states/toastState"
 import ToastItem from "@/components/toast/ToastItem"
 
-function Toast(): JSX.Element {
+function Toast() {
   const toastList = useToastStore((state) => state.toasts)
 
   const getBackgroundColor = (type: string) => {
