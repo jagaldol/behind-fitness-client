@@ -1,0 +1,7 @@
+1:"$Sreact.fragment"
+2:I[5500,["/_next/static/chunks/0l_51iqu-ud1d.js","/_next/static/chunks/1860zsbcg5z1o.js","/_next/static/chunks/0loi9_t0pcsxu.js","/_next/static/chunks/03crg5tf~illj.js","/_next/static/chunks/0w0rjs2b7.pq1.js"],"Image"]
+3:I[47868,["/_next/static/chunks/0l_51iqu-ud1d.js","/_next/static/chunks/1860zsbcg5z1o.js","/_next/static/chunks/0loi9_t0pcsxu.js","/_next/static/chunks/03crg5tf~illj.js","/_next/static/chunks/0w0rjs2b7.pq1.js"],"default"]
+4:I[97367,["/_next/static/chunks/0l_51iqu-ud1d.js","/_next/static/chunks/1860zsbcg5z1o.js","/_next/static/chunks/0loi9_t0pcsxu.js","/_next/static/chunks/03crg5tf~illj.js"],"OutletBoundary"]
+5:"$Sreact.suspense"
+0:{"rsc":["$","$1","c",{"children":[["$","main",null,{"className":"flex flex-col pt-24 w-screen items-center justify-center","children":[["$","$L2",null,{"src":{"src":"/_next/static/media/logo.0-gc2~7ywk~rd.svg","width":160,"height":112,"blurWidth":0,"blurHeight":0},"alt":"로고","priority":true,"className":"select-none"}],["$","div",null,{"className":"py-5","children":[["$","h1",null,{"className":"font-GmarketSansMedium font-bold text-6xl","children":"Fitness"}],["$","p",null,{"className":"pl-44 text-lg","children":"Behind"}]]}],["$","$L3",null,{}]]}],[["$","script","script-0",{"src":"/_next/static/chunks/0w0rjs2b7.pq1.js","async":true}]],["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"OHniI36Ch5A-JTZOl2Tng"}
+6:null
