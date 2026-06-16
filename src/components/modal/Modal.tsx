@@ -15,14 +15,14 @@ function Modal({ modalData, zIndex = 100 }: Props) {
   return (
     <div
       style={{ zIndex }}
-      className="fixed left-0 right-0 top-0 bottom-0 flex items-center justify-center bg-black/30"
+      className="fixed inset-0 flex items-center justify-center overflow-x-hidden overflow-y-auto bg-black/30 p-3"
     >
-      <div className="m-3 bg-content-box border border-text-gray/10 rounded-2xl shadow-2xl p-3">
-        <div className="flex w-full justify-between items-center">
-          <h2 className="text-lg font-GmarketSansMedium mr-7">{modalData.title}</h2>
+      <div className="max-h-[calc(100dvh-1.5rem)] w-full max-w-[calc(100vw-1.5rem)] overflow-x-hidden overflow-y-auto rounded-2xl border border-text-gray/10 bg-content-box p-3 shadow-2xl sm:w-auto">
+        <div className="flex w-full items-center justify-between">
+          <h2 className="mr-7 min-w-0 truncate text-lg font-GmarketSansMedium">{modalData.title}</h2>
           <button
             type="button"
-            className="hover:brightness-75 transition-all text-2xl font-bold rounded-full"
+            className="shrink-0 rounded-full text-2xl font-bold transition-all hover:brightness-75"
             onClick={() => onCloseModal()}
             aria-label="Modal Close"
           >
@@ -30,7 +30,7 @@ function Modal({ modalData, zIndex = 100 }: Props) {
           </button>
         </div>
         <hr />
-        <section className="px-2 py-5">{modalData.body}</section>
+        <section className="overflow-x-hidden px-2 py-5">{modalData.body}</section>
       </div>
     </div>
   )

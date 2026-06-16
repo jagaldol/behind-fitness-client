@@ -97,7 +97,7 @@ export default function AddInbodyForm() {
           />
         </div>
       </div>
-      <div className="w-[300px]">
+      <div className="w-full max-w-[300px] overflow-hidden">
         {userInfo && (
           <InbodyBarChartContainer
             height={userInfo.height}

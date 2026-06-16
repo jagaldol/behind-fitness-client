@@ -1,6 +1,8 @@
-import { PointTooltipProps, ResponsiveLine } from "@nivo/line"
-import { BasicTooltip } from "@nivo/tooltip"
-import React from "react"
+"use client"
+
+import { ResponsiveLine } from "@nivo/line"
+import type { PointOrSliceMouseHandler, PointOrSliceTouchHandler } from "@nivo/line"
+import { useState } from "react"
 import useModal from "@/hooks/useModal"
 import UpdateInbodyForm from "@/containers/more/inbody/UpdateInbodyForm"
 import moment from "moment/moment"
@@ -14,6 +16,14 @@ interface InbodyDatum {
 interface InbodyLineSeries {
   id: string
   data: InbodyDatum[]
+}
+
+interface TooltipState {
+  x: number
+  y: number
+  date: string
+  value: string
+  color: string
 }
 
 const theme = {
@@ -33,14 +43,34 @@ const theme = {
   },
 }
 
-function CustomTooltip({ point }: PointTooltipProps<InbodyLineSeries>, unit: string) {
+function ViewportTooltip({ tooltip }: { tooltip: TooltipState | null }) {
+  if (!tooltip) return null
+
+  const padding = 8
+  const offset = 14
+  const tooltipWidth = 220
+  const tooltipHeight = 32
+  const viewportWidth = window.innerWidth
+  const viewportHeight = window.innerHeight
+  const clampedWidth = Math.min(tooltipWidth, viewportWidth - padding * 2)
+  const maxLeft = Math.max(padding, viewportWidth - clampedWidth - padding)
+  const maxTop = Math.max(padding, viewportHeight - tooltipHeight - padding)
+  const preferredTop =
+    tooltip.y - tooltipHeight - offset >= padding ? tooltip.y - tooltipHeight - offset : tooltip.y + offset
+  const left = Math.min(Math.max(tooltip.x - clampedWidth / 2, padding), maxLeft)
+  const top = Math.min(Math.max(preferredTop, padding), maxTop)
+
   return (
-    <BasicTooltip
-      id={moment(point.data.x).format("YY년 M월 D일")}
-      value={`${String(point.data.y)}${unit}`}
-      enableChip
-      color={point.seriesColor}
-    />
+    <div
+      className="pointer-events-none fixed z-[80] box-border flex h-8 max-w-[calc(100vw-16px)] items-center gap-2 overflow-hidden rounded-sm bg-[#555555] px-2 text-sm text-white shadow-md"
+      style={{ left, top, width: tooltipWidth }}
+      role="tooltip"
+    >
+      <span className="h-3 w-3 shrink-0" style={{ backgroundColor: tooltip.color }} />
+      <span className="min-w-0 truncate">
+        {tooltip.date}: <strong>{tooltip.value}</strong>
+      </span>
+    </div>
   )
 }
 
@@ -57,6 +87,8 @@ export default function Chart({
 }) {
   const { openModal } = useModal()
   const chartData: InbodyLineSeries[] = [{ id, data }]
+  const [tooltip, setTooltip] = useState<TooltipState | null>(null)
+  const pointSize = data.length > 48 ? 4 : data.length > 24 ? 6 : 8
 
   if (data.length === 0) return <div className="w-full text-center text-text-gray">기록을 추가해주세요</div>
   const minY = Math.min(...data.map((d) => Number(d.y))) - 0.1
@@ -77,46 +109,88 @@ export default function Chart({
   const maxDate = moment.max(allDates).add(1, "month").startOf("month")
 
   const totalMonths = maxDate.diff(minDate, "months") + 1
-  const monthInterval = Math.floor(totalMonths / 12) + 1
+  const maxXAxisTicks = data.length > 48 ? 6 : 7
+  const targetTickCount = Math.min(maxXAxisTicks, totalMonths)
+  const monthInterval = Math.max(1, Math.ceil((totalMonths - 1) / Math.max(targetTickCount - 1, 1)))
   const months = []
   for (let currentMonth = minDate.clone(); currentMonth < maxDate; currentMonth.add(monthInterval, "month")) {
     months.push(currentMonth.toDate())
   }
-  months.push(maxDate.toDate())
+  if (!moment(months[months.length - 1]).isSame(maxDate, "month")) {
+    if (months.length < maxXAxisTicks) {
+      months.push(maxDate.toDate())
+    } else {
+      months[months.length - 1] = maxDate.toDate()
+    }
+  }
+
+  const updateTooltip = (point: Readonly<{ data: InbodyDatum; seriesColor: string }>, x: number, y: number) => {
+    setTooltip({
+      x,
+      y,
+      date: moment(point.data.x).format("YY년 M월 D일"),
+      value: `${String(point.data.y)}${unit}`,
+      color: point.seriesColor,
+    })
+  }
+
+  const handleMouseTooltip: PointOrSliceMouseHandler<InbodyLineSeries> = (datum, event) => {
+    if (!("data" in datum) || !("seriesColor" in datum)) return
+    updateTooltip(datum, event.clientX, event.clientY)
+  }
+
+  const handleTouchTooltip: PointOrSliceTouchHandler<InbodyLineSeries> = (datum, event) => {
+    if (!("data" in datum) || !("seriesColor" in datum)) return
+    const touch = event.touches[0] ?? event.changedTouches[0]
+    if (!touch) return
+    updateTooltip(datum, touch.clientX, touch.clientY)
+  }
 
   return (
-    <ResponsiveLine
-      data={chartData}
-      margin={{ top: 10, right: 10, bottom: 54, left: 32 }}
-      xScale={{
-        type: "time",
-        format: "%Y-%m-%d",
-        precision: "day",
-        min: minDate.toDate(),
-        max: maxDate.toDate(),
-      }}
-      yScale={{
-        type: "linear",
-        min: minY,
-        max: maxY,
-      }}
-      xFormat="time:%Y-%m-%d"
-      enableGridX={false}
-      colors={[`${color}`]}
-      pointSize={10}
-      axisLeft={{
-        tickValues: uniqueYValues,
-      }}
-      axisBottom={{
-        tickRotation: 90, // Rotates the labels
-        format: (date) => moment(date).format("YY.M.D"), // 날짜 형식
-        tickValues: months,
-      }}
-      gridYValues={uniqueYValues}
-      tooltip={(point) => CustomTooltip(point, unit)}
-      onClick={(point: any) => openModal("인바디 기록 수정", <UpdateInbodyForm id={point.data.id} />)}
-      useMesh
-      theme={theme}
-    />
+    <div className="relative h-full w-full min-w-0 overflow-hidden">
+      <ResponsiveLine
+        data={chartData}
+        margin={{ top: 10, right: 22, bottom: 54, left: 36 }}
+        xScale={{
+          type: "time",
+          format: "%Y-%m-%d",
+          precision: "day",
+          min: minDate.toDate(),
+          max: maxDate.toDate(),
+        }}
+        yScale={{
+          type: "linear",
+          min: minY,
+          max: maxY,
+        }}
+        xFormat="time:%Y-%m-%d"
+        enableGridX={false}
+        colors={[`${color}`]}
+        pointSize={pointSize}
+        axisLeft={{
+          tickValues: uniqueYValues,
+        }}
+        axisBottom={{
+          tickRotation: 90,
+          format: (date) => moment(date).format("YY.M.D"),
+          tickValues: months,
+        }}
+        gridYValues={uniqueYValues}
+        tooltip={() => null}
+        onMouseEnter={handleMouseTooltip}
+        onMouseMove={handleMouseTooltip}
+        onMouseLeave={() => setTooltip(null)}
+        onTouchStart={handleTouchTooltip}
+        onTouchMove={handleTouchTooltip}
+        onTouchEnd={() => setTooltip(null)}
+        onClick={(point: any) => {
+          setTooltip(null)
+          openModal("인바디 기록 수정", <UpdateInbodyForm id={point.data.id} />)
+        }}
+        useMesh
+        theme={theme}
+      />
+      <ViewportTooltip tooltip={tooltip} />
+    </div>
   )
 }
