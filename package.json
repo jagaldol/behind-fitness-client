@@ -42,7 +42,7 @@
     "postcss": "8.5.26",
     "prettier": "3.9.6",
     "tailwindcss": "4.3.3",
-    "typescript": "6.0.2"
+    "typescript": "6.0.3"
   },
   "overrides": {
     "brace-expansion": "5.0.8",
